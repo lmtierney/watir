@@ -5,9 +5,13 @@ install:
   - set PATH=C:\Ruby23\bin;%PATH%
   - bundle install
   - support/appveyor.cmd
+before_test:
+  - curl -fL -o C:\Tools\WebDriver\IEDriverServer.zip https://selenium-release.storage.googleapis.com/3.141/IEDriverServer_Win32_3.141.0.zip
+  - 7z e C:\Tools\WebDriver\IEDriverServer.zip -oC:\Tools\WebDriver -aoa
+  - IEDriverServer.exe --version
+  - dir C:\Tools\WebDriver
 test_script:
   - bundle exec rake %RAKE_TASK%
 environment:
   matrix:
-    - RAKE_TASK: spec:chrome
-    - RAKE_TASK: spec:firefox
+    - RAKE_TASK: spec:ie
